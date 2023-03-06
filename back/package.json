@@ -19,6 +19,8 @@
     "multer": "^1.4.5-lts.1"
   },
   "dependencies": {
-    "helmet": "^6.0.1"
+    "helmet": "^6.0.1",
+    "mongoose-type-email": "^1.1.2",
+    "tld-list": "^1.0.1"
   }
 }

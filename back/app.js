@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParse = require('body-parser');
 const path = require('path');
 require('dotenv').config()
 const helmet = require('helmet')
@@ -27,11 +26,12 @@ app.use((req, res, next) => {
 });
 
 app
+  .use(express.json())
   .use(morgan('dev'))
-  .use(bodyParse())
   .use(helmet({
     crossOriginResourcePolicy: false
   }))
+
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 

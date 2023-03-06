@@ -1,6 +1,5 @@
 const passwordValidator = require('password-validator');
 
-
 const schemaPassword = new passwordValidator();
 
 schemaPassword

@@ -18,7 +18,7 @@ exports.createSauce = (req, res, next) => {
     .catch(error => res.status(400).json({error}));
 };
 
-exports.modifyThing = (req, res, next) => {
+exports.modifySauce = (req, res, next) => {
   Sauce.findOne({_id: req.params.id})
     .then(sauce => {
       const filename = sauce.imageUrl.split('/images/')[1];
@@ -39,7 +39,7 @@ exports.modifyThing = (req, res, next) => {
     })
 };
 
-exports.deleteThing = (req, res, next) => {
+exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({_id: req.params.id})
     .then(sauce => {
       const filename = sauce.imageUrl.split('/images/')[1];
@@ -49,16 +49,16 @@ exports.deleteThing = (req, res, next) => {
           .catch(error => res.status(400).json({error}));
       });
     })
-    .catch(error => res.status(500).json({error}));
+    .catch(error => res.status(500).json({error }));
 };
 
-exports.getOneThing = (req, res, next) => {
+exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({_id: req.params.id})
     .then(thing => res.status(200).json(thing))
     .catch(error => res.status(404).json({error}));
 };
 
-exports.getAllThings = (req, res, next) => {
+exports.getAllSauce = (req, res, next) => {
   Sauce.find()
     .then(things => res.status(200).json(things))
     .catch(error => res.status(400).json({error}));
@@ -74,21 +74,21 @@ exports.likeSauce = (req, res, next) => {
     Sauce.updateOne(
       {_id: sauceId},
       {
-        $inc: {likes: 1},
+        $inc: {likes: +1},
         $push: {usersLiked: userId},
       }
     )
-      .then(() => res.status(200).json({message: "Sauce appréciée"}))
+      .then(() => res.status(200).json({message: "Sauce liker"}))
       .catch((error) => res.status(500).json({error}));
   } else if (like === -1) {
     Sauce.updateOne(
       {_id: sauceId},
       {
-        $inc: {dislike: -1},
+        $inc: {dislikes: +1},
         $push: {usersDisliked: userId},
       }
     )
-      .then(() => res.status(200).json({message: "Sauce non appréciée"}))
+      .then(() => res.status(200).json({message: "Sauce disliker"}))
       .catch((error) => res.status(500).json({error}));
   } else {
     Sauce.findOne(
@@ -104,7 +104,7 @@ exports.likeSauce = (req, res, next) => {
         } else if (sauce.usersDisliked.includes(userId)) {
           Sauce.updateOne(
             {_id: sauceId},
-            {$pull: {usersLiked: userId}, $inc: {dislikes: -1}}
+            {$pull: {usersDisliked: userId}, $inc: {dislikes: -1}}
           )
             .then(() => res.status(200).json({message: "Sauce appréciée"}))
             .catch((error) => res.status(500).json({error}));
