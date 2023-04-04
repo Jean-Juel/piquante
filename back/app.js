@@ -5,8 +5,8 @@ require('dotenv').config()
 const helmet = require('helmet')
 const morgan = require('morgan')
 
-const stuffRoutes = require('./routes/sauce');
-const userRoutes = require('./routes/user');
+const sauceRoutes = require('./routes/sauce');
+const authRoutes = require('./routes/auth');
 
 mongoose.set('strictQuery', true);
 
@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGO_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
-  .catch(() => console.log('Connexion à MongoDB échouée !'));
+  .catch((err) => console.log('Connexion à MongoDB échouée !', err));
 
 const app = express();
 
@@ -35,7 +35,7 @@ app
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-app.use('/api/sauces', stuffRoutes);
-app.use('/api/auth', userRoutes);
+app.use('/api/sauces', sauceRoutes);
+app.use('/api/auth', authRoutes);
 
 module.exports = app;
